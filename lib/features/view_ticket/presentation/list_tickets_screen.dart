@@ -35,7 +35,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) {
-                  return AddTaskScreen();
+                  return const AddTaskScreen();
                 },
               ));
             }),
@@ -66,10 +66,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ));
   }
 
+  Future _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+    debugPrint("Handling a background message: ${message.messageId}");
+  }
+
   void registerNotification() async {
     messaging = FirebaseMessaging.instance;
 
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    try {
+      FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    } catch (e) {
+      debugPrint(e.toString());
+    }
 
     // On iOS, this helps to take the user permissions
     NotificationSettings settings = await messaging.requestPermission(
@@ -92,10 +100,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     } else {
       debugPrint('User declined or has not accepted permission');
     }
-  }
-
-  Future _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-    debugPrint("Handling a background message: ${message.messageId}");
   }
 }
 

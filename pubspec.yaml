@@ -36,7 +36,10 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
 
-  # For state-management
+  # Flutter form field validator.
+  form_field_validator: ^1.1.0
+
+  # For state-management.
   flutter_riverpod: ^2.4.0
 
   # Flutter plugin for Firebase Core, enabling connecting to multiple Firebase apps.
@@ -45,8 +48,17 @@ dependencies:
   # Flutter plugin for Cloud Firestore.
   cloud_firestore: ^4.9.1
 
-  # Firebase Cloud Messaging, to deliver messages
+  # Firebase Cloud Messaging, to deliver messages.
   firebase_messaging: ^14.6.7
+
+  # Flutter plugin for Firebase Cloud Storage.
+  firebase_storage: ^11.2.6
+
+  # Flutter plugin for selecting images from the Android and iOS image library.
+  image_picker: ^1.0.4
+
+  # A string-based path manipulation library.
+  path: ^1.8.3
 
 dev_dependencies:
   flutter_test:
