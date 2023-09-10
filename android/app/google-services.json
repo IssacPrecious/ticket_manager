@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "502512835451",
+    "project_id": "task-manager-186d3",
+    "storage_bucket": "task-manager-186d3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:502512835451:android:5a7f7c970b2544d8313bde",
+        "android_client_info": {
+          "package_name": "com.ips.ticket.manager"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeFpa_yer53T2upUTaoMC8wbzSjdsWn7Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
