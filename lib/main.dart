@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:ticket_manager/features/view_ticket/presentation/list_tickets_screen.dart';
 
 void main() async {
@@ -17,34 +18,39 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
-        useMaterial3: true,
-        textTheme: const TextTheme(
-          labelSmall: TextStyle(fontSize: 11, letterSpacing: 0.50, fontWeight: FontWeight.w500, color: Colors.grey),
-          labelMedium: TextStyle(fontSize: 12, letterSpacing: 0.50, fontWeight: FontWeight.w500, color: Colors.grey),
-          labelLarge: TextStyle(fontSize: 14, letterSpacing: 0.10, fontWeight: FontWeight.w500, color: Colors.grey),
-          bodySmall: TextStyle(fontSize: 12, letterSpacing: 0.40, fontWeight: FontWeight.w400, color: Colors.indigo),
-          bodyMedium: TextStyle(fontSize: 14, letterSpacing: 0.25, fontWeight: FontWeight.w400, color: Colors.indigo),
-          bodyLarge: TextStyle(fontSize: 16, letterSpacing: 0.50, fontWeight: FontWeight.w400, color: Colors.indigo),
-          titleSmall: TextStyle(fontSize: 14, letterSpacing: 0.10, fontWeight: FontWeight.bold, color: Colors.indigo),
-          titleMedium: TextStyle(fontSize: 16, letterSpacing: 0.15, fontWeight: FontWeight.bold, color: Colors.indigo),
-          titleLarge: TextStyle(fontSize: 22, letterSpacing: 0.00, fontWeight: FontWeight.bold, color: Colors.indigo),
-          headlineSmall:
-              TextStyle(fontSize: 24, letterSpacing: 0.00, fontWeight: FontWeight.w400, color: Colors.indigo),
-          headlineMedium:
-              TextStyle(fontSize: 28, letterSpacing: 0.00, fontWeight: FontWeight.w400, color: Colors.indigo),
-          headlineLarge:
-              TextStyle(fontSize: 32, letterSpacing: 0.00, fontWeight: FontWeight.w400, color: Colors.indigo),
-          displaySmall: TextStyle(fontSize: 36, letterSpacing: 0.00, fontWeight: FontWeight.w400, color: Colors.indigo),
-          displayMedium:
-              TextStyle(fontSize: 45, letterSpacing: 0.00, fontWeight: FontWeight.w400, color: Colors.indigo),
-          displayLarge: TextStyle(fontSize: 57, letterSpacing: 0.00, fontWeight: FontWeight.w400, color: Colors.indigo),
+    return OverlaySupport(
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+          useMaterial3: true,
+          textTheme: const TextTheme(
+            labelSmall: TextStyle(fontSize: 11, letterSpacing: 0.50, fontWeight: FontWeight.w500, color: Colors.grey),
+            labelMedium: TextStyle(fontSize: 12, letterSpacing: 0.50, fontWeight: FontWeight.w500, color: Colors.grey),
+            labelLarge: TextStyle(fontSize: 14, letterSpacing: 0.10, fontWeight: FontWeight.w500, color: Colors.grey),
+            bodySmall: TextStyle(fontSize: 12, letterSpacing: 0.40, fontWeight: FontWeight.w400, color: Colors.indigo),
+            bodyMedium: TextStyle(fontSize: 14, letterSpacing: 0.25, fontWeight: FontWeight.w400, color: Colors.indigo),
+            bodyLarge: TextStyle(fontSize: 16, letterSpacing: 0.50, fontWeight: FontWeight.w400, color: Colors.indigo),
+            titleSmall: TextStyle(fontSize: 14, letterSpacing: 0.10, fontWeight: FontWeight.bold, color: Colors.indigo),
+            titleMedium:
+                TextStyle(fontSize: 16, letterSpacing: 0.15, fontWeight: FontWeight.bold, color: Colors.indigo),
+            titleLarge: TextStyle(fontSize: 22, letterSpacing: 0.00, fontWeight: FontWeight.bold, color: Colors.indigo),
+            headlineSmall:
+                TextStyle(fontSize: 24, letterSpacing: 0.00, fontWeight: FontWeight.w400, color: Colors.indigo),
+            headlineMedium:
+                TextStyle(fontSize: 28, letterSpacing: 0.00, fontWeight: FontWeight.w400, color: Colors.indigo),
+            headlineLarge:
+                TextStyle(fontSize: 32, letterSpacing: 0.00, fontWeight: FontWeight.w400, color: Colors.indigo),
+            displaySmall:
+                TextStyle(fontSize: 36, letterSpacing: 0.00, fontWeight: FontWeight.w400, color: Colors.indigo),
+            displayMedium:
+                TextStyle(fontSize: 45, letterSpacing: 0.00, fontWeight: FontWeight.w400, color: Colors.indigo),
+            displayLarge:
+                TextStyle(fontSize: 57, letterSpacing: 0.00, fontWeight: FontWeight.w400, color: Colors.indigo),
+          ),
         ),
+        home: const HomeScreen(),
       ),
-      home: const HomeScreen(),
     );
   }
 }

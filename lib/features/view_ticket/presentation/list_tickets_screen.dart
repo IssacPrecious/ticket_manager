@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:ticket_manager/features/create_ticket/presentation/add_ticket_screen.dart';
 import 'package:ticket_manager/features/view_ticket/data/view_tickets_provider.dart';
 
@@ -16,6 +17,8 @@ final firestore = FirebaseFirestore.instance;
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   late final FirebaseMessaging messaging;
+  late Stream<dynamic> ticketsStream;
+  int ticketsLength = 0;
 
   @override
   void initState() {
@@ -26,7 +29,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final ticketsStream = ref.read(ticketsProvider.stream);
+    ticketsStream = ref.read(ticketsProvider.stream);
 
     return Scaffold(
         backgroundColor: Colors.indigo[100],
@@ -46,18 +49,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             stream: ticketsStream,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                debugPrint("Snapshot Data :: ${snapshot.data.length}");
+                debugPrint("Snapshot Data :: ${snapshot.data!.length}");
+                ticketsLength = snapshot.data!.length;
 
-                if (snapshot.data.length == 0) {
+                if (ticketsLength == 0) {
                   return const Center(
                     child: Text("No Tickets found"),
                   );
                 }
 
+                // snapshot.data!.first();
+                // showSimpleNotification(Text("data"));
+
                 return ListView(
                   children: snapshot.data!.map<Widget>((DocumentSnapshot document) {
                     Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
                     debugPrint("Data:: ${document.data()}");
+
                     return TicketCard(
                         title: data['title'],
                         description: data['description'],
@@ -74,6 +82,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
         ));
   }
+
+  void showNotification() {}
 
   Future _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     debugPrint("Handling a background message: ${message.messageId}");
@@ -101,6 +111,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
         debugPrint("Message Received :: ${message.notification!.title!}");
+
+        // For displaying the notification as an overlay
+        showSimpleNotification(
+          Text(
+            message.notification!.title!,
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+          subtitle: Text(message.notification!.body!,
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    color: Colors.white,
+                  )),
+          background: Colors.indigo,
+          duration: const Duration(seconds: 2),
+        );
       });
 
       FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {

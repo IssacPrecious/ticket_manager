@@ -51,6 +51,9 @@ dependencies:
   # Firebase Cloud Messaging, to deliver messages.
   firebase_messaging: ^14.6.7
 
+  # To build toast and internal notification.
+  overlay_support: ^2.1.0
+
   # Flutter plugin for Firebase Cloud Storage.
   firebase_storage: ^11.2.6
 
