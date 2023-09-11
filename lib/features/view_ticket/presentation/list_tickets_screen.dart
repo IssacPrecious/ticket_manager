@@ -27,6 +27,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final ticketsStream = ref.read(ticketsProvider.stream);
+
     return Scaffold(
         backgroundColor: Colors.indigo[100],
         appBar: AppBar(title: const Text("Ticket Manager")),
@@ -45,6 +46,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             stream: ticketsStream,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
+                debugPrint("Snapshot Data :: ${snapshot.data.length}");
+
+                if (snapshot.data.length == 0) {
+                  return const Center(
+                    child: Text("No Tickets found"),
+                  );
+                }
+
                 return ListView(
                   children: snapshot.data!.map<Widget>((DocumentSnapshot document) {
                     Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
@@ -53,7 +62,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         title: data['title'],
                         description: data['description'],
                         location: data['location'],
-                        dateTime: DateTime.now());
+                        dateTime: data['dateTime'].toString());
                   }).toList(),
                 );
               }
@@ -115,7 +124,7 @@ class TicketCard extends StatelessWidget {
   final String title;
   final String description;
   final String location;
-  final DateTime dateTime;
+  final String dateTime;
 
   @override
   Widget build(BuildContext context) {
@@ -149,13 +158,13 @@ class TicketCard extends StatelessWidget {
                   )
                 ],
               ),
-              Divider(),
+              const Divider(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.pin_drop, color: Colors.grey, size: 16),
+                      const Icon(Icons.pin_drop, color: Colors.grey, size: 16),
                       Text(
                         location,
                         style: Theme.of(context).textTheme.labelLarge,

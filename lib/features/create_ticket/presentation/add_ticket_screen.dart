@@ -105,18 +105,13 @@ class _AddTaskScreenState extends ConsumerState<AddTaskScreen> {
                           onPressed: () async {
                             FocusManager.instance.primaryFocus?.unfocus();
                             if (createTicketFormKey.currentState!.validate()) {
-                              final title = titleController.text;
-                              final description = descriptionController.text;
-                              final location = locationController.text;
-                              final dateTime = dateTimeController.text;
-                              final fileName = screenshotController.text;
-
                               AddTicketInputModel inputModel = AddTicketInputModel(
-                                  title: title,
-                                  description: description,
-                                  location: location,
-                                  createdDate: dateTime,
-                                  fileName: fileName);
+                                title: titleController.text,
+                                description: descriptionController.text,
+                                location: locationController.text,
+                                createdDate: dateTimeController.text,
+                                fileName: screenshotController.text,
+                              );
 
                               await FirebaseFirestore.instance.collection('tickets').add(inputModel.toJson());
                             } else {
