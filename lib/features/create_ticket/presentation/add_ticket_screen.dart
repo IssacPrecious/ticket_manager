@@ -105,6 +105,7 @@ class _AddTaskScreenState extends ConsumerState<AddTaskScreen> {
                             backgroundColor: Colors.indigo,
                           ),
                           onPressed: () async {
+                            CustomLoader.show(context);
                             FocusManager.instance.primaryFocus?.unfocus();
                             if (createTicketFormKey.currentState!.validate()) {
                               AddTicketInputModel inputModel = AddTicketInputModel(
@@ -119,9 +120,10 @@ class _AddTaskScreenState extends ConsumerState<AddTaskScreen> {
                                   .collection('tickets')
                                   .add(inputModel.toJson())
                                   .then((value) {
-                                //print("Add Succesfully");
+                                CustomLoader.hide(context);
+                                Navigator.pop(context);
                               }).catchError((error) {
-                                //print(error.toString());
+                                CustomLoader.hide(context);
                               });
                             } else {
                               debugPrint("Validation Error");
