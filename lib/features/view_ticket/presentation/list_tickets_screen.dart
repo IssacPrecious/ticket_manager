@@ -70,7 +70,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         title: data['title'],
                         description: data['description'],
                         location: data['location'],
-                        dateTime: data['dateTime'].toString());
+                        dateTime: data['dateTime'],
+                        attachment: data['fileName'] ?? "");
                   }).toList(),
                 );
               }
@@ -143,15 +144,19 @@ class TicketCard extends StatelessWidget {
     required this.description,
     required this.location,
     required this.dateTime,
+    required this.attachment,
   });
 
   final String title;
   final String description;
   final String location;
   final String dateTime;
+  final String attachment;
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double availableWidth = screenWidth - (16 * 4);
     return Card(
         color: const Color(0xFFf1f3ff),
         shape: RoundedRectangleBorder(
@@ -170,14 +175,24 @@ class TicketCard extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        title,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyLarge
-                            ?.copyWith(color: Colors.black, fontWeight: FontWeight.bold),
+                      SizedBox(
+                        width: availableWidth,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(title,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge
+                                    ?.copyWith(color: Colors.black, fontWeight: FontWeight.bold)),
+                            if (attachment.isNotEmpty) const Icon(Icons.attachment)
+                          ],
+                        ),
                       ),
-                      Text(description, style: Theme.of(context).textTheme.bodyMedium)
+                      SizedBox(
+                        width: availableWidth,
+                        child: Text(description, style: Theme.of(context).textTheme.bodyMedium),
+                      ),
                     ],
                   )
                 ],

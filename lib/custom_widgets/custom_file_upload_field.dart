@@ -25,6 +25,8 @@ class CustomFilePicker extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 8),
             child: TextFormField(
+              showCursor: true,
+              readOnly: true,
               controller: controller,
               cursorColor: Colors.transparent,
               cursorWidth: 0.0,

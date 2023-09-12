@@ -63,8 +63,13 @@ dependencies:
   # A string-based path manipulation library.
   path: ^1.8.3
 
+  # A cross platform plugin for displaying and scheduling local notifications.
   flutter_local_notifications: ^15.1.1
+
+  # Flutter plugin for reading and writing simple key-value pairs.
   shared_preferences: ^2.2.1
+  
+  # Flutter plugin providing detailed information about the device.
   device_info_plus: ^4.0.1
 
 dev_dependencies:
