@@ -1,14 +1,42 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:ticket_manager/features/view_ticket/presentation/list_tickets_screen.dart';
+import 'package:ticket_manager/firebase_options.dart';
+import 'package:ticket_manager/utils/device_info_helper.dart';
+import 'package:ticket_manager/utils/init.dart';
+
+/// To verify things are working, check out the native platform logs.
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  try {
+    log('Received a background message ${message.messageId}');
+    log('Received a background message ${message.data}');
+  } catch (e) {
+    log(e.toString());
+  }
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp();
-
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  try {
+    await Initializer.initializeFCM();
+  } catch (e) {
+    log(e.toString());
+  }
+  await Initializer.initializeApp();
+  fcmTokenUpdate();
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -140,5 +168,28 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+}
+
+Future<void> fcmTokenUpdate() async {
+  String? fcmToken = '';
+  try {
+    fcmToken = await FirebaseMessaging.instance.getToken();
+    log("FCM :: ${fcmToken ?? "EMPTY"}");
+    String deviceId = await AppDeviceInfo.getDeviceUUID();
+    QuerySnapshot? userData =
+        await FirebaseFirestore.instance.collection('users').where('device_id', isEqualTo: deviceId).limit(1).get();
+    if (userData.docs.isNotEmpty) {
+      await FirebaseFirestore.instance.collection('users').doc(userData.docs[0].id).update({
+        'fcmtoken': fcmToken,
+      });
+    } else {
+      await FirebaseFirestore.instance.collection('users').add({
+        'device_id': deviceId,
+        'fcmtoken': fcmToken,
+      });
+    }
+  } catch (e) {
+    log(e.toString());
   }
 }

@@ -153,7 +153,7 @@ class TicketCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-        color: Color(0xFFf1f3ff),
+        color: const Color(0xFFf1f3ff),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10), // if you need this
           side: const BorderSide(

@@ -56,7 +56,7 @@ class CustomFilePicker extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8.0),
                   borderSide: const BorderSide(color: Colors.red),
                 ),
-                prefixIcon: Icon(Icons.upload_file),
+                prefixIcon: const Icon(Icons.upload_file),
               ),
             ),
           ),

@@ -12,6 +12,7 @@ import 'package:ticket_manager/custom_widgets/custom_text_form_field.dart';
 import 'package:ticket_manager/custom_widgets/custom_file_upload_field.dart';
 import 'package:ticket_manager/features/create_ticket/domain/add_ticket_input_model.dart';
 import 'package:ticket_manager/utils/form_validators.dart';
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 
 class AddTaskScreen extends ConsumerStatefulWidget {
@@ -94,6 +95,7 @@ class _AddTaskScreenState extends ConsumerState<AddTaskScreen> {
                             setState(() {
                               screenshotController.text = fileName;
                             });
+                            // ignore: use_build_context_synchronously
                             CustomLoader.hide(context);
                           },
                           controller: screenshotController),
@@ -113,7 +115,14 @@ class _AddTaskScreenState extends ConsumerState<AddTaskScreen> {
                                 fileName: screenshotController.text,
                               );
 
-                              await FirebaseFirestore.instance.collection('tickets').add(inputModel.toJson());
+                              await FirebaseFirestore.instance
+                                  .collection('tickets')
+                                  .add(inputModel.toJson())
+                                  .then((value) {
+                                //print("Add Succesfully");
+                              }).catchError((error) {
+                                //print(error.toString());
+                              });
                             } else {
                               debugPrint("Validation Error");
                             }
@@ -152,7 +161,7 @@ class _AddTaskScreenState extends ConsumerState<AddTaskScreen> {
   Future<String> uploadFile() async {
     if (_photo == null) return "Error selecting file..";
     final fileName = basename(_photo!.path);
-    debugPrint('File Uploaded :: ' + fileName);
+    debugPrint('File Uploaded :: $fileName');
     final destination = 'files/$fileName';
 
     try {
