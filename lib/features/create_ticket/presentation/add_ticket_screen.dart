@@ -104,9 +104,9 @@ class _AddTaskScreenState extends ConsumerState<AddTaskScreen> {
                             backgroundColor: Colors.indigo,
                           ),
                           onPressed: () async {
-                            CustomLoader.show(context);
                             FocusManager.instance.primaryFocus?.unfocus();
                             if (createTicketFormKey.currentState!.validate()) {
+                              CustomLoader.show(context);
                               AddTicketInputModel inputModel = AddTicketInputModel(
                                 title: titleController.text,
                                 description: descriptionController.text,
