@@ -36,6 +36,7 @@ class CustomTextFormFleld extends StatelessWidget {
           autocorrect: true,
           controller: controller,
           enabled: isEnabled,
+          textCapitalization: TextCapitalization.sentences,
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
             filled: true,

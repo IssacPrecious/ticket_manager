@@ -30,6 +30,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   try {
     await Initializer.initializeFCM();
   } catch (e) {

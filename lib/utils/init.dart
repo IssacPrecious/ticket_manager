@@ -7,15 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticket_manager/main.dart';
 import 'package:ticket_manager/utils/globals.dart';
 
-/// Set of functions which are called before runApp() inside main() function.
 class Initializer {
-  /// Called before runApp() inside main() function, in order to initialize the app.
-  ///
-  /// [sharedPreferences] - Used to store and retrieve data from [SharedPreferences].
-  ///
-  /// [authProvider] - Used to refresh user data upon app startup.
-  ///
-  ///
   static Future<void> initializeApp({
     SharedPreferences? sharedPreferences,
   }) async {
@@ -88,7 +80,7 @@ class Initializer {
             android: AndroidNotificationDetails(
               GlobalVariables.notificationChannel.id,
               GlobalVariables.notificationChannel.name,
-              icon: 'notification_icon',
+              icon: '@mipmap/ic_launcher',
               channelDescription: GlobalVariables.notificationChannel.description,
               // colorized: true,
               // color: Colors.transparent,

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:overlay_support/overlay_support.dart';
@@ -157,67 +158,124 @@ class TicketCard extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double availableWidth = screenWidth - (16 * 4);
-    return Card(
-        color: const Color(0xFFf1f3ff),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10), // if you need this
-          side: const BorderSide(
-            color: Colors.grey,
-            width: 1,
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: availableWidth,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(title,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge
-                                    ?.copyWith(color: Colors.black, fontWeight: FontWeight.bold)),
-                            if (attachment.isNotEmpty) const Icon(Icons.attachment)
-                          ],
-                        ),
+    return GestureDetector(
+      onTap: () async {
+        debugPrint("image");
+        Reference reference = FirebaseStorage.instance.ref('files');
+        debugPrint(reference.name.toString());
+        debugPrint(attachment.toString());
+        String imgUrl = "";
+
+        if (attachment.isNotEmpty) {
+          imgUrl = await reference.child("$attachment/file").getDownloadURL();
+          debugPrint(imgUrl.toString());
+        }
+
+        // ignore: use_build_context_synchronously
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Center(child: Text("Ticket Details", style: Theme.of(context).textTheme.headlineSmall)),
+                    const SizedBox(height: 16),
+                    Text("Title", style: Theme.of(context).textTheme.labelLarge),
+                    Text(title),
+                    const SizedBox(height: 12),
+                    Text("Description", style: Theme.of(context).textTheme.labelLarge),
+                    Text(description),
+                    const SizedBox(height: 12),
+                    Text("Ticket Created On", style: Theme.of(context).textTheme.labelLarge),
+                    Text(dateTime),
+                    const SizedBox(height: 16),
+                    if (imgUrl.isNotEmpty)
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Attachment", style: Theme.of(context).textTheme.labelLarge),
+                          const SizedBox(height: 8),
+                          Image.network(imgUrl),
+                        ],
                       ),
-                      SizedBox(
-                        width: availableWidth,
-                        child: Text(description, style: Theme.of(context).textTheme.bodyMedium),
-                      ),
-                    ],
-                  )
-                ],
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text("Close"))
+                  ],
+                ),
               ),
-              const Divider(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      const Icon(Icons.pin_drop, color: Colors.grey, size: 16),
-                      Text(
-                        location,
-                        style: Theme.of(context).textTheme.labelLarge,
-                      ),
-                    ],
-                  ),
-                  Text(
-                    dateTime.toString(),
-                    style: Theme.of(context).textTheme.labelLarge,
-                  )
-                ],
-              )
-            ],
+            );
+          },
+        );
+      },
+      child: Card(
+          color: const Color(0xFFf1f3ff),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10), // if you need this
+            side: const BorderSide(
+              color: Colors.grey,
+              width: 1,
+            ),
           ),
-        ));
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: availableWidth,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(title,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge
+                                      ?.copyWith(color: Colors.black, fontWeight: FontWeight.bold)),
+                              if (attachment.isNotEmpty) const Icon(Icons.attachment)
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          width: availableWidth,
+                          child: Text(description, style: Theme.of(context).textTheme.bodyMedium),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                const Divider(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.pin_drop, color: Colors.grey, size: 16),
+                        Text(
+                          location,
+                          style: Theme.of(context).textTheme.labelLarge,
+                        ),
+                      ],
+                    ),
+                    Text(
+                      dateTime.toString(),
+                      style: Theme.of(context).textTheme.labelLarge,
+                    )
+                  ],
+                )
+              ],
+            ),
+          )),
+    );
   }
 }
